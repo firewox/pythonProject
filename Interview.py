@@ -186,6 +186,147 @@ def main_eg4():
     level_order_traversal(root)
     print()
 
+
+#LCR 023. 相交链表
+def getIntersectionNode(headA, headB):
+    '''
+    相交链表
+    :param headA:
+    :param headB:
+    :return:
+    '''
+    if not headA or not headB:
+        return None
+    
+    pointerA = headA
+    pointerB = headB
+    while pointerA != pointerB:
+        if pointerA:
+            pointerA = pointerA.next
+        else:
+            pointerA = headB
+        if pointerB:
+            pointerB = pointerB.next
+        else:
+            pointerB = headA
+    return pointerA
+
+
+def quickSort(arr, low, high):
+    '''
+    快速排序
+    :param arr:
+    :param low:
+    :param high:
+    :return:
+    '''
+    if low < high:
+        pivot_index = partition(arr, low, high)
+        quickSort(arr, low, pivot_index - 1)
+        quickSort(arr, pivot_index + 1, high)
+
+def partition(arr, low, high):
+    '''
+    分区函数
+    :param arr:
+    :param low:
+    :param high:
+    :return:
+    '''
+    pivot = arr[high]
+    i = low - 1
+    for j in range(low, high):
+        if arr[j] < pivot:
+            i += 1
+            arr[i], arr[j] = arr[j], arr[i]
+    arr[i + 1], arr[high] = arr[high], arr[i + 1]
+    return i + 1
+
+# LCR 077. 排序链表
+def sortLinkedList(head):
+    '''
+    排序链表
+    :param head:
+    :return:
+    '''
+    if not head or not head.next:
+        return head
+
+    # 将链表节点值存入数组
+    values = []
+    current = head
+    while current:
+        values.append(current.value)
+        current = current.next
+    
+    # 使用快速排序对数组进行排序
+    quickSort(values, 0, len(values) - 1)
+    
+    # 将排序后的值重新赋给链表节点
+    current = head
+    for val in values:
+        current.value = val
+        current = current.next
+    
+    return head
+
+    
+def mainEg6():
+    '''
+    排序链表
+    :return:
+    '''
+    # 创建一个示例链表 4 -> 2 -> 1 -> 3
+    head = ListNode(4)
+    head.next = ListNode(2)
+    head.next.next = ListNode(1)
+    head.next.next.next = ListNode(3)
+
+    print("Original linked list:")
+    current = head
+    while current:
+        print(current.value, end=" ")
+        current = current.next
+    print()
+
+    sorted_head = sortLinkedList(head)
+
+    print("Sorted linked list:")
+    current = sorted_head
+    while current:
+        print(current.value, end=" ")
+        current = current.next
+    print()
+
+
+def main_eg5():
+    '''
+    相交链表
+    :return:
+    '''
+    # 创建两个示例链表
+    # 链表A: 1 -> 2 -> 3 \
+    #                    -> 6 -> 7
+    # 链表B:       4 -> 5 /
+    headA = ListNode(1)
+    headA.next = ListNode(2)
+    headA.next.next = ListNode(3)
+    intersection = ListNode(6)
+    intersection.next = ListNode(7)
+    headA.next.next.next = intersection
+
+    headB = ListNode(4)
+    headB.next = ListNode(5)
+    headB.next.next = intersection
+
+    result = getIntersectionNode(headA, headB)
+    if result:
+        print(f"Intersection at node with value: {result.value}")
+    else:
+        print("No intersection")
+
+
+
 if __name__ == "__main__":
     # 单链表反转
     # main_eg1()
@@ -194,4 +335,8 @@ if __name__ == "__main__":
     # 二叉树的前序遍历、中序遍历、后序遍历
     # main_eg3()
     # 二叉树的逆序
-    main_eg4()
+    # main_eg4()
+    # 相交链表
+    # main_eg5()
+    # 排序链表
+    mainEg6()
